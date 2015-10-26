@@ -1,6 +1,7 @@
 import React from 'react';
 import { render } from 'react-dom';
 import { Router } from 'react-router';
+import { DevTools, DebugPanel, LogMonitor } from 'redux-devtools/lib/react';
 import { Provider } from 'react-redux';
 import { fromJS } from 'immutable';
 import createBrowserHistory from 'history/lib/createBrowserHistory';
@@ -21,8 +22,15 @@ Object.keys(initialState).forEach(key => {
 const store = configureStore(rootReducer, initialState);
 
 render(
-    <Provider store={store}>
-        <Router children={routes} history={history} />
-    </Provider>,
+    (
+        <div>
+            <Provider store={store}>
+                <Router children={routes} history={history} />
+            </Provider>
+            <DebugPanel top right bottom>
+                <DevTools store={store} monitor={LogMonitor} />
+            </DebugPanel>
+        </div>
+    ),
     document.getElementById('react-view')
 );

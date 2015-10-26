@@ -6,6 +6,7 @@ import mongo from 'mongodb';
 import monk from 'monk';
 
 import React from 'react';
+import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 import { renderToString } from 'react-dom/server';
 import { RoutingContext, match } from 'react-router';
@@ -14,7 +15,6 @@ import createLocation from 'history/lib/createLocation';
 import todo from './routes/todo';
 
 import rootReducer from '../shared/reducers';
-import configureStore from '../shared/store';
 import routes from '../shared/routes';
 
 const app = express();
@@ -36,7 +36,7 @@ app.use('/todo', todo);
 // React routes
 app.use((req, res) => {
     const location = createLocation(req.url);
-    const store = configureStore(rootReducer);
+    const store = createStore(rootReducer);
 
     match({ routes, location }, (err, redirectLocation, renderProps) => {
         if (err) {
